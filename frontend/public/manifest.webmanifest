@@ -1,0 +1,11 @@
+{
+  "name": "PT Angkasa HWD Aussie",
+  "short_name": "AHWDA",
+  "description": "The Reliable Solution for your documents on your journey to AUSSIE",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#003399",
+  "orientation": "portrait-primary",
+  "icons": []
+}

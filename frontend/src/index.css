@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    width: 100%;
+    overflow-x: clip;
+    overflow-y: scroll;
+  }
+
+  body {
+    @apply font-sans text-gray-800 antialiased bg-white;
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    overflow-x: clip;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #root {
+    width: 100%;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    @apply bg-brand-blue/20 text-brand-blue;
+  }
+
+  img,
+  video,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-brand-red to-brand-blue bg-clip-text text-transparent;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+}
+
+/* Prevent AOS from shifting layout on mobile */
+@media (max-width: 1023px) {
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+[data-aos] {
+  pointer-events: auto;
+}
