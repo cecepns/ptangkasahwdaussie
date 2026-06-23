@@ -11,7 +11,7 @@ export default function BlurredBg({
   position = "top-right",
   size = "md",
   className = "",
-  opacity = 0.12,
+  opacity = 0.06,
 }) {
   const sizes = {
     sm: "w-64 h-64 sm:w-80 sm:h-80",
