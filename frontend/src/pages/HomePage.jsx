@@ -2,8 +2,9 @@ import Hero from "@/components/sections/Hero";
 import SplitSection from "@/components/ui/SplitSection";
 import Button from "@/components/ui/Button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Users, FileCheck, Shield } from "lucide-react";
+import { ArrowRight, Users, FileCheck, Shield, Briefcase } from "lucide-react";
 import { ASSETS } from "@/assets";
+import BlurredBg from "@/components/ui/BlurredBg";
 
 const QUICK_LINKS = [
   {
@@ -23,6 +24,12 @@ const QUICK_LINKS = [
     title: "Legalitas",
     description: "View our official business registration and company documents.",
     href: "/legalitas",
+  },
+  {
+    icon: Briefcase,
+    title: "Job Opportunities",
+    description: "Browse current job openings and requirements for working in Australia.",
+    href: "/jobs",
   },
 ];
 
@@ -50,8 +57,12 @@ export default function HomePage() {
         </Button>
       </SplitSection>
 
-      <section className="section-padding bg-slate-50">
-        <div className="section-container">
+      <section className="relative section-padding bg-slate-50 overflow-x-clip">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <BlurredBg src={ASSETS.bg.one} position="top-left" size="md" />
+          <BlurredBg src={ASSETS.bg.two} position="bottom-right" size="md" />
+        </div>
+        <div className="section-container relative z-10">
           <div
             data-aos="fade-up"
             className="text-center max-w-2xl mx-auto mb-12"
@@ -64,7 +75,7 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {QUICK_LINKS.map((item, index) => (
               <Link
                 key={item.href}

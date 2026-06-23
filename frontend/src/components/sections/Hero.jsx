@@ -2,6 +2,7 @@ import { ArrowRight, Phone, FileCheck } from "lucide-react";
 import { COMPANY, STATS } from "@/constants/company";
 import { ASSETS } from "@/assets";
 import Button from "@/components/ui/Button";
+import BlurredBg from "@/components/ui/BlurredBg";
 import { useIsDesktop } from "@/hooks/useAosAnimation";
 
 export default function Hero() {
@@ -9,6 +10,8 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-x-clip bg-gradient-to-br from-slate-50 via-white to-blue-50/50">
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <BlurredBg src={ASSETS.bg.one} position="top-right" size="lg" opacity={0.06} />
+        <BlurredBg src={ASSETS.bg.two} position="bottom-left" size="md" opacity={0.06} />
         <div className="absolute -top-40 -right-40 w-64 sm:w-96 h-64 sm:h-96 bg-brand-blue/5 rounded-full blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-64 sm:w-96 h-64 sm:h-96 bg-brand-red/5 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[min(100%,800px)] aspect-square bg-gradient-to-r from-brand-blue/[0.03] to-brand-red/[0.03] rounded-full blur-3xl" />

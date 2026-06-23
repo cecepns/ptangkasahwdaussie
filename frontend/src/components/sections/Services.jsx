@@ -12,6 +12,7 @@ import Button from "@/components/ui/Button";
 import { Link } from "react-router-dom";
 import { SERVICES } from "@/constants/company";
 import { ASSETS } from "@/assets";
+import BlurredBg from "@/components/ui/BlurredBg";
 
 const ICON_MAP = {
   FileText,
@@ -54,8 +55,11 @@ export default function Services() {
         </Button>
       </SplitSection>
 
-      <section className="section-padding bg-white">
-        <div className="section-container">
+      <section className="relative section-padding bg-white overflow-x-clip">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <BlurredBg src={ASSETS.bg.one} position="bottom-right" size="lg" />
+        </div>
+        <div className="section-container relative z-10">
           <SectionHeader
             badge="What We Offer"
             title="Services Tailored for You"

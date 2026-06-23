@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { COMPANY } from "@/constants/company";
 import { ASSETS } from "@/assets";
 import { useIsDesktop } from "@/hooks/useAosAnimation";
+import BlurredBg from "@/components/ui/BlurredBg";
 
 export default function Contact() {
   const isDesktop = useIsDesktop();
@@ -39,8 +40,50 @@ export default function Contact() {
         </div>
       </SplitSection>
 
-      <section className="section-padding bg-slate-50 overflow-x-clip">
-        <div className="section-container">
+      <section className="relative section-padding bg-white overflow-x-clip">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <BlurredBg src={ASSETS.bg.two} position="top-right" size="md" />
+        </div>
+        <div className="section-container relative z-10">
+          <div data-aos="fade-up" className="text-center max-w-2xl mx-auto mb-10">
+            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase rounded-full bg-brand-blue/10 text-brand-blue">
+              Kantor Pusat
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Gedung Graha Purna Yudha
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-gray-600 leading-relaxed">
+              {COMPANY.address.line1}, {COMPANY.address.city}
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {COMPANY.officeImages.map((img, index) => (
+              <div
+                key={img.alt}
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
+                className="overflow-hidden rounded-2xl border border-gray-100 shadow-sm bg-white"
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="w-full h-52 sm:h-64 object-cover hover:scale-105 transition-transform duration-500"
+                />
+                <p className="p-4 text-sm font-medium text-gray-700 text-center">
+                  {img.alt}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative section-padding bg-slate-50 overflow-x-clip">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <BlurredBg src={ASSETS.bg.one} position="bottom-left" size="md" />
+        </div>
+        <div className="section-container relative z-10">
           <div className="max-w-4xl mx-auto mb-10 text-center lg:hidden">
             <h2 className="text-2xl font-bold text-gray-900">Send a Message</h2>
             <p className="mt-2 text-sm text-gray-500">

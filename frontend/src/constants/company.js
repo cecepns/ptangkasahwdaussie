@@ -30,7 +30,17 @@ export const COMPANY = {
     mapsUrl:
       "https://www.google.com/maps/search/Gedung+Veteran+RI+Graha+Purna+Yudha+Jakarta+Selatan",
   },
-  about: `A genuine and sincere objective of Mr. Heri Wardanu in founding PT. Angkasa HWD Aussie is to provide and assist dedicated, hard-working, honest Indonesian workers in order to find better livelihood abroad, particularly in Australia.`,
+  about: `A genuine and sincere objective of Mr. Hery Wardanu in founding PT. Angkasa HWD Aussie is to provide and assist dedicated, hard-working, honest Indonesian workers in order to find better livelihood abroad, particularly in Australia.`,
+  officeImages: [
+    {
+      src: ASSETS.gedung.vet1,
+      alt: "Gedung Graha Purna Yudha — Kantor Pusat",
+    },
+    {
+      src: ASSETS.gedung.vet3,
+      alt: "Gedung Veteran RI — Graha Purna Yudha",
+    },
+  ],
   legalitas: [
     {
       id: "nib",
@@ -38,6 +48,7 @@ export const COMPANY = {
       description: "Nomor Induk Berusaha (NIB) — legal business registration certificate.",
       file: ASSETS.legalitas.nib,
       type: "NIB",
+      fileType: "pdf",
     },
     {
       id: "sk",
@@ -45,6 +56,15 @@ export const COMPANY = {
       description: "Surat Keputusan (SK) — official company establishment decree.",
       file: ASSETS.legalitas.sk,
       type: "SK",
+      fileType: "pdf",
+    },
+    {
+      id: "npwp",
+      title: "NPWP PT. Angkasa HWD Aussie",
+      description: "Nomor Pokok Wajib Pajak (NPWP) — official tax identification card.",
+      file: ASSETS.legalitas.npwp,
+      type: "NPWP",
+      fileType: "image",
     },
   ],
 };
@@ -54,6 +74,7 @@ export const NAV_LINKS = [
   { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Legalitas", href: "/legalitas" },
+  { label: "Jobs", href: "/jobs" },
   { label: "Contact", href: "/contact" },
 ];
 

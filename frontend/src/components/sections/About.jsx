@@ -5,6 +5,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 import { COMPANY } from "@/constants/company";
 import { ASSETS } from "@/assets";
+import BlurredBg from "@/components/ui/BlurredBg";
 
 const VALUES = [
   {
@@ -25,7 +26,7 @@ const VALUES = [
   {
     icon: User,
     title: "Personal Approach",
-    description: "Founded by Mr. Heri Wardanu with a vision to serve honest, hardworking people.",
+    description: "Founded by Mr. Hery Wardanu with a vision to serve honest, hardworking people.",
   },
 ];
 
@@ -56,8 +57,11 @@ export default function About() {
         </Button>
       </SplitSection>
 
-      <section className="section-padding bg-slate-50">
-        <div className="section-container">
+      <section className="relative section-padding bg-slate-50 overflow-x-clip">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <BlurredBg src={ASSETS.bg.two} position="top-left" size="md" />
+        </div>
+        <div className="section-container relative z-10">
           <SectionHeader
             badge="Our Values"
             title="What We Stand For"
