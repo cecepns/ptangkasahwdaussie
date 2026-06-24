@@ -1,6 +1,9 @@
 import { Maximize2, MapPin } from "lucide-react";
+import { resolveMediaUrl } from "@/utils/api";
 
 export default function JobCard({ job, index, onOpen }) {
+  const imageSrc = resolveMediaUrl(job.src) || job.src;
+
   return (
     <button
       type="button"
@@ -11,7 +14,7 @@ export default function JobCard({ job, index, onOpen }) {
     >
       <div className="relative aspect-[3/4] overflow-hidden bg-slate-100">
         <img
-          src={job.src}
+          src={imageSrc}
           alt={job.alt}
           loading="lazy"
           className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"

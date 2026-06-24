@@ -1,12 +1,16 @@
 import { ArrowRight, Phone, FileCheck } from "lucide-react";
-import { COMPANY, STATS } from "@/constants/company";
 import { ASSETS } from "@/assets";
 import Button from "@/components/ui/Button";
 import BlurredBg from "@/components/ui/BlurredBg";
 import { useIsDesktop } from "@/hooks/useAosAnimation";
+import { useContent } from "@/context/ContentContext";
 
 export default function Hero() {
   const isDesktop = useIsDesktop();
+  const { content } = useContent();
+  const settings = content.settings;
+  const stats = content.stats || [];
+
   return (
     <section className="relative min-h-screen flex items-center overflow-x-clip bg-gradient-to-br from-slate-50 via-white to-blue-50/50">
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
@@ -27,17 +31,21 @@ export default function Hero() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm font-medium rounded-full bg-brand-blue/10 text-brand-blue border border-brand-blue/20">
               <FileCheck className="w-4 h-4" />
-              Trusted Document Solutions
+              {settings.hero_badge || "Trusted Document Solutions"}
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.1]">
-              Your Journey to{" "}
-              <span className="gradient-text">Australia</span>{" "}
-              Starts Here
+              {settings.hero_title || (
+                <>
+                  Your Journey to{" "}
+                  <span className="gradient-text">Australia</span>{" "}
+                  Starts Here
+                </>
+              )}
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-xl">
-              {COMPANY.tagline}
+              {settings.tagline}
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -50,26 +58,28 @@ export default function Hero() {
               </Button>
             </div>
 
-            <div
-              data-aos="fade-up"
-              data-aos-delay="300"
-              className="mt-10 flex items-center gap-4 p-4 rounded-2xl bg-white/80 backdrop-blur border border-gray-100 shadow-sm max-w-md"
-            >
-              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-brand-red/10">
-                <Phone className="w-5 h-5 text-brand-red" />
+            {settings.phones?.[0] && (
+              <div
+                data-aos="fade-up"
+                data-aos-delay="300"
+                className="mt-10 flex items-center gap-4 p-4 rounded-2xl bg-white/80 backdrop-blur border border-gray-100 shadow-sm max-w-md"
+              >
+                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-brand-red/10">
+                  <Phone className="w-5 h-5 text-brand-red" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                    Call Us Now
+                  </p>
+                  <a
+                    href={settings.phones[0].href}
+                    className="text-lg font-bold text-gray-900 hover:text-brand-blue transition-colors"
+                  >
+                    {settings.phones[0].number}
+                  </a>
+                </div>
               </div>
-              <div>
-                <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
-                  Call Us Now
-                </p>
-                <a
-                  href={COMPANY.phones[0].href}
-                  className="text-lg font-bold text-gray-900 hover:text-brand-blue transition-colors"
-                >
-                  {COMPANY.phones[0].number}
-                </a>
-              </div>
-            </div>
+            )}
           </div>
 
           <div
@@ -89,9 +99,9 @@ export default function Hero() {
         </div>
 
         <div className="mt-16 lg:mt-24 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-          {STATS.map((stat, index) => (
+          {stats.map((stat, index) => (
             <div
-              key={stat.label}
+              key={stat.id || stat.label}
               data-aos="fade-up"
               data-aos-delay={index * 100}
               className="text-center p-4 sm:p-6 rounded-2xl bg-white/60 backdrop-blur border border-gray-100"

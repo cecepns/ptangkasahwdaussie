@@ -10,3 +10,7 @@ build/
 .idea/
 .vscode/
 *.local
+backend/uploads-aussie/*
+!backend/uploads-aussie/.gitkeep
+backend/node_modules/
+frontend/node_modules/

@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, ArrowUp } from "lucide-react";
-import { COMPANY, NAV_LINKS } from "@/constants/company";
 import { ASSETS } from "@/assets";
+import { useContent } from "@/context/ContentContext";
 
 export default function Footer() {
+  const { content } = useContent();
+  const settings = content.settings;
+  const navLinks = content.navLinks || [];
+
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
@@ -13,11 +17,11 @@ export default function Footer() {
           <div data-aos="fade-up" className="lg:col-span-1">
             <img
               src={ASSETS.logoFooter}
-              alt={COMPANY.name}
+              alt={settings.company_name}
               className="h-14 w-auto object-contain mb-4"
             />
             <p className="text-sm text-gray-400 leading-relaxed">
-              {COMPANY.tagline}
+              {settings.tagline}
             </p>
           </div>
 
@@ -26,7 +30,7 @@ export default function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-2">
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     to={link.href}
@@ -44,7 +48,7 @@ export default function Footer() {
               Contact
             </h3>
             <ul className="space-y-3">
-              {COMPANY.emails.map((email) => (
+              {(settings.emails || []).map((email) => (
                 <li key={email}>
                   <a
                     href={`mailto:${email}`}
@@ -55,7 +59,7 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
-              {COMPANY.phones.map((phone) => (
+              {(settings.phones || []).map((phone) => (
                 <li key={phone.number}>
                   <a
                     href={phone.href}
@@ -80,11 +84,11 @@ export default function Footer() {
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-brand-green" />
                 <div>
-                  <p className="font-medium text-gray-300 mb-1">{COMPANY.address.title}</p>
-                  <p>{COMPANY.address.line1}</p>
-                  <p>{COMPANY.address.line2}</p>
-                  <p>{COMPANY.address.line3}</p>
-                  <p>{COMPANY.address.city}</p>
+                  <p className="font-medium text-gray-300 mb-1">{settings.address?.title}</p>
+                  <p>{settings.address?.line1}</p>
+                  <p>{settings.address?.line2}</p>
+                  <p>{settings.address?.line3}</p>
+                  <p>{settings.address?.city}</p>
                 </div>
               </div>
             </address>
@@ -93,10 +97,10 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} {COMPANY.name}. All rights reserved.
+            &copy; {new Date().getFullYear()} {settings.company_name}. All rights reserved.
           </p>
           <p className="text-sm text-gray-500">
-            Director: <span className="text-gray-400">{COMPANY.director}</span>
+            Director: <span className="text-gray-400">{settings.director}</span>
           </p>
           <button
             type="button"

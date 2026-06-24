@@ -1,83 +1,101 @@
 import SplitSection from "@/components/ui/SplitSection";
 import ContactForm from "@/components/ui/ContactForm";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
-import { COMPANY } from "@/constants/company";
 import { ASSETS } from "@/assets";
 import { useIsDesktop } from "@/hooks/useAosAnimation";
 import BlurredBg from "@/components/ui/BlurredBg";
+import { useContent, getSection } from "@/context/ContentContext";
+import { resolveMediaUrl } from "@/utils/api";
 
 export default function Contact() {
   const isDesktop = useIsDesktop();
+  const { content } = useContent();
+  const settings = content.settings;
+  const intro = getSection(content, "contact", "intro");
+  const office = getSection(content, "contact", "office");
+  const officeHours = settings.office_hours || [];
+  const officeImages = (settings.office_images || []).map((img) => ({
+    src: resolveMediaUrl(img.src) || img.src,
+    alt: img.alt,
+  }));
 
   return (
     <>
       <SplitSection
-        badge="Contact Us"
-        title="We Are Here to Help"
-        subtitle="Have questions about your documents? Reach out to us and our team will assist you promptly."
+        badge={intro?.badge || "Contact Us"}
+        title={intro?.title || "We Are Here to Help"}
+        subtitle={intro?.subtitle || "Have questions about your documents? Reach out to us and our team will assist you promptly."}
         image={ASSETS.images.callCenter}
         imageAlt="Customer service ready to assist you"
         bg="bg-white"
         className="pt-28 lg:pt-32 overflow-x-clip"
       >
         <div className="space-y-3 text-sm text-gray-600">
-          <p>
-            <span className="font-semibold text-gray-900">Phone: </span>
-            <a href={COMPANY.phones[0].href} className="hover:text-brand-blue">
-              {COMPANY.phones[0].number}
-            </a>
-          </p>
-          <p>
-            <span className="font-semibold text-gray-900">Email: </span>
-            <a href={`mailto:${COMPANY.emails[0]}`} className="hover:text-brand-blue break-all">
-              {COMPANY.emails[0]}
-            </a>
-          </p>
-          <p>
-            <span className="font-semibold text-gray-900">Office: </span>
-            {COMPANY.address.city}
-          </p>
+          {settings.phones?.[0] && (
+            <p>
+              <span className="font-semibold text-gray-900">Phone: </span>
+              <a href={settings.phones[0].href} className="hover:text-brand-blue">
+                {settings.phones[0].number}
+              </a>
+            </p>
+          )}
+          {settings.emails?.[0] && (
+            <p>
+              <span className="font-semibold text-gray-900">Email: </span>
+              <a href={`mailto:${settings.emails[0]}`} className="hover:text-brand-blue break-all">
+                {settings.emails[0]}
+              </a>
+            </p>
+          )}
+          {settings.address?.city && (
+            <p>
+              <span className="font-semibold text-gray-900">Office: </span>
+              {settings.address.city}
+            </p>
+          )}
         </div>
       </SplitSection>
 
-      <section className="relative section-padding bg-white overflow-x-clip">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-          <BlurredBg src={ASSETS.bg.two} position="top-right" size="md" />
-        </div>
-        <div className="section-container relative z-10">
-          <div data-aos="fade-up" className="text-center max-w-2xl mx-auto mb-10">
-            <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase rounded-full bg-brand-blue/10 text-brand-blue">
-              Kantor Pusat
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              Gedung Graha Purna Yudha
-            </h2>
-            <p className="mt-3 text-sm sm:text-base text-gray-600 leading-relaxed">
-              {COMPANY.address.line1}, {COMPANY.address.city}
-            </p>
+      {officeImages.length > 0 && (
+        <section className="relative section-padding bg-white overflow-x-clip">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+            <BlurredBg src={ASSETS.bg.two} position="top-right" size="md" />
           </div>
+          <div className="section-container relative z-10">
+            <div data-aos="fade-up" className="text-center max-w-2xl mx-auto mb-10">
+              <span className="inline-block px-4 py-1.5 mb-4 text-xs font-semibold tracking-widest uppercase rounded-full bg-brand-blue/10 text-brand-blue">
+                {office?.badge || settings.address?.title || "Kantor Pusat"}
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                {office?.title || settings.address?.buildingTitle || "Gedung Graha Purna Yudha"}
+              </h2>
+              <p className="mt-3 text-sm sm:text-base text-gray-600 leading-relaxed">
+                {settings.address?.line1}, {settings.address?.city}
+              </p>
+            </div>
 
-          <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {COMPANY.officeImages.map((img, index) => (
-              <div
-                key={img.alt}
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-                className="overflow-hidden rounded-2xl border border-gray-100 shadow-sm bg-white"
-              >
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  className="w-full h-52 sm:h-64 object-cover hover:scale-105 transition-transform duration-500"
-                />
-                <p className="p-4 text-sm font-medium text-gray-700 text-center">
-                  {img.alt}
-                </p>
-              </div>
-            ))}
+            <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {officeImages.map((img, index) => (
+                <div
+                  key={img.alt || index}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100}
+                  className="overflow-hidden rounded-2xl border border-gray-100 shadow-sm bg-white"
+                >
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    className="w-full h-52 sm:h-64 object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                  <p className="p-4 text-sm font-medium text-gray-700 text-center">
+                    {img.alt}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="relative section-padding bg-slate-50 overflow-x-clip">
         <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
@@ -104,7 +122,7 @@ export default function Contact() {
                   <h3 className="font-bold text-gray-900">Email</h3>
                 </div>
                 <ul className="space-y-2">
-                  {COMPANY.emails.map((email) => (
+                  {(settings.emails || []).map((email) => (
                     <li key={email}>
                       <a
                         href={`mailto:${email}`}
@@ -125,7 +143,7 @@ export default function Contact() {
                   <h3 className="font-bold text-gray-900">Phone</h3>
                 </div>
                 <ul className="space-y-3">
-                  {COMPANY.phones.map((phone) => (
+                  {(settings.phones || []).map((phone) => (
                     <li key={phone.number}>
                       <a
                         href={phone.href}
@@ -148,36 +166,39 @@ export default function Contact() {
                   <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-brand-green/10">
                     <MapPin className="w-5 h-5 text-brand-green" />
                   </div>
-                  <h3 className="font-bold text-gray-900">{COMPANY.address.title}</h3>
+                  <h3 className="font-bold text-gray-900">{settings.address?.title}</h3>
                 </div>
                 <address className="not-italic text-sm text-gray-600 leading-relaxed">
-                  <p>{COMPANY.address.line1}</p>
-                  <p>{COMPANY.address.line2}</p>
-                  <p>{COMPANY.address.line3}</p>
-                  <p className="mt-1 font-medium text-gray-800">{COMPANY.address.city}</p>
+                  <p>{settings.address?.line1}</p>
+                  <p>{settings.address?.line2}</p>
+                  <p>{settings.address?.line3}</p>
+                  <p className="mt-1 font-medium text-gray-800">{settings.address?.city}</p>
                 </address>
-                <a
-                  href={COMPANY.address.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block mt-4 text-sm font-semibold text-brand-blue hover:underline"
-                >
-                  View on Google Maps →
-                </a>
+                {settings.address?.mapsUrl && (
+                  <a
+                    href={settings.address.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-4 text-sm font-semibold text-brand-blue hover:underline"
+                  >
+                    View on Google Maps →
+                  </a>
+                )}
               </div>
 
-              <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-blue to-brand-blue/90 text-white">
-                <div className="flex items-center gap-3 mb-2">
-                  <Clock className="w-5 h-5" />
-                  <h3 className="font-bold">Office Hours</h3>
+              {officeHours.length > 0 && (
+                <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-blue to-brand-blue/90 text-white">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Clock className="w-5 h-5" />
+                    <h3 className="font-bold">Office Hours</h3>
+                  </div>
+                  {officeHours.map((item) => (
+                    <p key={item.days} className="text-sm text-white/80 mt-1">
+                      {item.days}: {item.hours}
+                    </p>
+                  ))}
                 </div>
-                <p className="text-sm text-white/80">
-                  Monday – Friday: 09:00 – 17:00 WIB
-                </p>
-                <p className="text-sm text-white/80 mt-1">
-                  Saturday: 09:00 – 13:00 WIB
-                </p>
-              </div>
+              )}
             </div>
 
             <div

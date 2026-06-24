@@ -1,9 +1,12 @@
 import { useEffect, useCallback } from "react";
 import { X, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
-import { COMPANY } from "@/constants/company";
 import Button from "@/components/ui/Button";
+import { useContent } from "@/context/ContentContext";
+import { resolveMediaUrl } from "@/utils/api";
 
 export default function JobLightbox({ jobs, currentIndex, onClose, onNavigate }) {
+  const { content } = useContent();
+  const settings = content.settings;
   const job = jobs[currentIndex];
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < jobs.length - 1;
@@ -34,8 +37,9 @@ export default function JobLightbox({ jobs, currentIndex, onClose, onNavigate })
 
   if (!job) return null;
 
-  const whatsappMessage = `Hello PT Angkasa HWD Aussie, I am interested in ${job.label} listed on your Job Opportunities page. Please provide more information.`;
-  const whatsappUrl = `${COMPANY.whatsapp.href}?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappMessage = `Hello ${settings.company_name}, I am interested in ${job.label} listed on your Job Opportunities page. Please provide more information.`;
+  const whatsappUrl = `${settings.whatsapp?.href}?text=${encodeURIComponent(whatsappMessage)}`;
+  const imageSrc = resolveMediaUrl(job.src) || job.src;
 
   return (
     <div
@@ -68,7 +72,7 @@ export default function JobLightbox({ jobs, currentIndex, onClose, onNavigate })
 
         <div className="overflow-y-auto flex-1 bg-slate-50">
           <img
-            src={job.src}
+            src={imageSrc}
             alt={job.alt}
             className="w-full h-auto object-contain"
           />

@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS, COMPANY } from "@/constants/company";
 import { ASSETS } from "@/assets";
 import { useScrollPosition } from "@/hooks/useScroll";
+import { useContent } from "@/context/ContentContext";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const scrolled = useScrollPosition();
   const location = useLocation();
+  const { content } = useContent();
+  const settings = content.settings;
+  const navLinks = content.navLinks || [];
   const isHome = location.pathname === "/";
   const showSolidBg = !isHome || scrolled;
 
@@ -45,13 +48,13 @@ export default function Navbar() {
           >
             <img
               src={ASSETS.logo}
-              alt={COMPANY.name}
+              alt={settings.company_name}
               className="h-10 lg:h-12 w-auto object-contain"
             />
           </Link>
 
           <ul className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <li key={link.href}>
                 <NavLink to={link.href} className={navLinkClass}>
                   {link.label}
@@ -85,7 +88,7 @@ export default function Navbar() {
       >
         <div className="section-container pb-4 bg-white/95 backdrop-blur-md border-b border-gray-100">
           <ul className="flex flex-col gap-1">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <li key={link.href}>
                 <NavLink
                   to={link.href}

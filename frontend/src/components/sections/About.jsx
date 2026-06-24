@@ -1,54 +1,37 @@
 import { ArrowRight } from "lucide-react";
-import { User, Target, Heart, Globe } from "lucide-react";
 import SplitSection from "@/components/ui/SplitSection";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
-import { COMPANY } from "@/constants/company";
 import { ASSETS } from "@/assets";
 import BlurredBg from "@/components/ui/BlurredBg";
-
-const VALUES = [
-  {
-    icon: Heart,
-    title: "Genuine Care",
-    description: "We sincerely care about every worker's journey and future abroad.",
-  },
-  {
-    icon: Target,
-    title: "Clear Mission",
-    description: "Helping dedicated Indonesian workers find better livelihood in Australia.",
-  },
-  {
-    icon: Globe,
-    title: "Australia Focus",
-    description: "Specialized expertise in Australian document and immigration requirements.",
-  },
-  {
-    icon: User,
-    title: "Personal Approach",
-    description: "Founded by Mr. Hery Wardanu with a vision to serve honest, hardworking people.",
-  },
-];
+import { useContent, getSection } from "@/context/ContentContext";
+import { getIcon } from "@/utils/icons";
 
 export default function About() {
+  const { content } = useContent();
+  const settings = content.settings;
+  const intro = getSection(content, "about", "intro");
+  const valuesHeader = getSection(content, "about", "values_header");
+  const values = content.contentItems?.values || [];
+
   return (
     <>
       <SplitSection
-        badge="About Us"
-        title="Building Bridges to a Better Future"
-        subtitle="We are committed to helping Indonesian workers achieve their dreams of working abroad with complete, reliable document support."
+        badge={intro?.badge || "About Us"}
+        title={intro?.title || "Building Bridges to a Better Future"}
+        subtitle={intro?.subtitle || "We are committed to helping Indonesian workers achieve their dreams of working abroad with complete, reliable document support."}
         image={ASSETS.images.australianMap}
         imageAlt="Australia map"
         bg="bg-white"
         className="pt-28 lg:pt-32"
       >
         <blockquote className="text-base text-gray-700 leading-relaxed italic border-l-4 border-brand-blue pl-4">
-          &ldquo;{COMPANY.about}&rdquo;
+          &ldquo;{settings.about}&rdquo;
         </blockquote>
         <div className="mt-6 flex items-center gap-4">
           <div>
-            <p className="font-bold text-gray-900">{COMPANY.director}</p>
-            <p className="text-sm text-gray-500">Direktur Utama</p>
+            <p className="font-bold text-gray-900">{settings.director}</p>
+            <p className="text-sm text-gray-500">{settings.director_title || "Direktur Utama"}</p>
           </div>
         </div>
         <Button to="/contact" variant="primary" className="mt-6">
@@ -63,28 +46,31 @@ export default function About() {
         </div>
         <div className="section-container relative z-10">
           <SectionHeader
-            badge="Our Values"
-            title="What We Stand For"
-            subtitle="Guided by sincerity and dedication to every worker we serve."
+            badge={valuesHeader?.badge || "Our Values"}
+            title={valuesHeader?.title || "What We Stand For"}
+            subtitle={valuesHeader?.subtitle || "Guided by sincerity and dedication to every worker we serve."}
           />
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {VALUES.map((value, index) => (
-              <div
-                key={value.title}
-                data-aos="fade-up"
-                data-aos-delay={index * 80}
-                className="p-6 rounded-2xl bg-white border border-gray-100 card-hover"
-              >
-                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-brand-blue/10 mb-4">
-                  <value.icon className="w-6 h-6 text-brand-blue" />
+            {values.map((value, index) => {
+              const Icon = getIcon(value.icon);
+              return (
+                <div
+                  key={value.id || value.title}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 80}
+                  className="p-6 rounded-2xl bg-white border border-gray-100 card-hover"
+                >
+                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-brand-blue/10 mb-4">
+                    <Icon className="w-6 h-6 text-brand-blue" />
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-2">{value.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {value.description}
+                  </p>
                 </div>
-                <h3 className="font-bold text-gray-900 mb-2">{value.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {value.description}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -100,7 +86,7 @@ export default function About() {
               Our Vision
             </p>
             <p className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight max-w-4xl mx-auto">
-              &ldquo;{COMPANY.tagline}&rdquo;
+              &ldquo;{settings.tagline}&rdquo;
             </p>
           </div>
         </div>

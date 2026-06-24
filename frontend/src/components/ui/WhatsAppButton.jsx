@@ -1,8 +1,10 @@
 import { MessageCircle } from "lucide-react";
-import { COMPANY } from "@/constants/company";
+import { useContent } from "@/context/ContentContext";
 
 export default function WhatsAppButton() {
-  const whatsappUrl = `${COMPANY.whatsapp.href}?text=${encodeURIComponent(COMPANY.whatsapp.defaultMessage)}`;
+  const { content } = useContent();
+  const whatsapp = content.settings?.whatsapp;
+  const whatsappUrl = `${whatsapp?.href}?text=${encodeURIComponent(whatsapp?.defaultMessage || "")}`;
 
   return (
     <a

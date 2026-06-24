@@ -5,14 +5,25 @@ import BlurredBg from "@/components/ui/BlurredBg";
 import JobCard from "@/components/ui/JobCard";
 import JobLightbox from "@/components/ui/JobLightbox";
 import Button from "@/components/ui/Button";
-import { JOB_LISTINGS } from "@/assets/jobs";
 import { ASSETS } from "@/assets";
-import { COMPANY } from "@/constants/company";
+import { useContent, getSection } from "@/context/ContentContext";
 
 export default function Jobs() {
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const { content } = useContent();
+  const settings = content.settings;
+  const header = getSection(content, "jobs", "header");
+  const statsBanner = getSection(content, "jobs", "stats_banner");
+  const cta = getSection(content, "jobs", "cta");
 
-  const whatsappUrl = `${COMPANY.whatsapp.href}?text=${encodeURIComponent(
+  const jobListings = (content.jobListings || []).map((job) => ({
+    id: job.id,
+    src: job.image_url || job.src,
+    alt: job.alt_text || job.alt || job.title,
+    label: job.title,
+  }));
+
+  const whatsappUrl = `${settings.whatsapp?.href}?text=${encodeURIComponent(
     "Hello PT Angkasa HWD Aussie, I would like to inquire about job opportunities in Australia."
   )}`;
 
@@ -26,9 +37,9 @@ export default function Jobs() {
 
         <div className="section-container relative z-10">
           <SectionHeader
-            badge="Job Opportunities"
-            title="Job Required — Work in Australia"
-            subtitle="Explore the latest job openings in Australia. Click any listing to view full details and apply through our team."
+            badge={header?.badge || "Job Opportunities"}
+            title={header?.title || "Job Required — Work in Australia"}
+            subtitle={header?.subtitle || "Explore the latest job openings in Australia. Click any listing to view full details and apply through our team."}
           />
 
           <div
@@ -40,19 +51,18 @@ export default function Jobs() {
                 <Briefcase className="w-7 h-7" />
               </div>
               <div className="text-center sm:text-left">
-                <p className="text-3xl font-bold gradient-text">{JOB_LISTINGS.length}+</p>
+                <p className="text-3xl font-bold gradient-text">{jobListings.length}+</p>
                 <p className="text-sm text-gray-600 font-medium">Active Job Listings</p>
               </div>
             </div>
             <div className="hidden sm:block w-px h-12 bg-gray-200" />
             <p className="text-sm text-gray-600 text-center sm:text-left max-w-md leading-relaxed">
-              We connect dedicated Indonesian workers with trusted employers across Australia.
-              Tap a card to view the full job posting.
+              {statsBanner?.subtitle || "We connect dedicated Indonesian workers with trusted employers across Australia. Tap a card to view the full job posting."}
             </p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {JOB_LISTINGS.map((job, index) => (
+            {jobListings.map((job, index) => (
               <JobCard
                 key={job.id}
                 job={job}
@@ -67,11 +77,10 @@ export default function Jobs() {
             className="mt-16 p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-brand-blue to-brand-blue/90 text-white text-center"
           >
             <h3 className="text-xl sm:text-2xl font-bold mb-3">
-              Interested in a Position?
+              {cta?.title || "Interested in a Position?"}
             </h3>
             <p className="text-white/80 max-w-xl mx-auto mb-6 text-sm sm:text-base leading-relaxed">
-              Contact our team for application guidance, document preparation, and full
-              support on your journey to working in Australia.
+              {cta?.subtitle || "Contact our team for application guidance, document preparation, and full support on your journey to working in Australia."}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
@@ -91,7 +100,7 @@ export default function Jobs() {
 
       {lightboxIndex !== null && (
         <JobLightbox
-          jobs={JOB_LISTINGS}
+          jobs={jobListings}
           currentIndex={lightboxIndex}
           onClose={() => setLightboxIndex(null)}
           onNavigate={setLightboxIndex}

@@ -2,7 +2,9 @@ import { useState } from "react";
 import { MessageCircle, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import Button from "./Button";
-import { COMPANY } from "@/constants/company";
+import { useContent } from "@/context/ContentContext";
+import { post } from "@/utils/request";
+import { API_ENDPOINTS } from "@/utils/endpoints";
 
 const initialForm = { name: "", email: "", phone: "", message: "" };
 
@@ -18,9 +20,9 @@ function validate(form) {
   return errors;
 }
 
-function buildWhatsAppMessage(form) {
+function buildWhatsAppMessage(form, companyName) {
   return [
-    `*New Inquiry — ${COMPANY.name}*`,
+    `*New Inquiry — ${companyName}*`,
     "",
     `Name: ${form.name}`,
     `Email: ${form.email}`,
@@ -32,6 +34,8 @@ function buildWhatsAppMessage(form) {
 }
 
 export default function ContactForm() {
+  const { content } = useContent();
+  const settings = content.settings;
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -53,10 +57,19 @@ export default function ContactForm() {
 
     setLoading(true);
 
-    const whatsappUrl = `${COMPANY.whatsapp.href}?text=${encodeURIComponent(buildWhatsAppMessage(form))}`;
+    const apiResult = await post(API_ENDPOINTS.CONTACT.SUBMIT, form);
+
+    if (apiResult.success && apiResult.data?.success) {
+      toast.success("Message sent successfully!");
+    } else {
+      toast.error(apiResult.error || "Failed to send message. Trying WhatsApp...");
+    }
+
+    const whatsappUrl = `${settings.whatsapp?.href}?text=${encodeURIComponent(
+      buildWhatsAppMessage(form, settings.company_name)
+    )}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
 
-    toast.success("Redirecting to WhatsApp...");
     setForm(initialForm);
     setLoading(false);
   };
@@ -147,7 +160,7 @@ export default function ContactForm() {
         ) : (
           <>
             <MessageCircle className="w-5 h-5" />
-            Send via WhatsApp
+            Send Message
           </>
         )}
       </Button>
