@@ -1,6 +1,6 @@
 export const API_CONFIG = {
-  baseURL: import.meta.env.VITE_API_URL || "https://api.kingcreativestudio.my.id/api",
-  uploadURL: import.meta.env.VITE_UPLOAD_URL || "https://api.kingcreativestudio.my.id",
+  baseURL: import.meta.env.VITE_API_URL || "https://api.kingcreativestudio.my.id/aussie-cms/api",
+  uploadURL: import.meta.env.VITE_UPLOAD_URL || "https://api.kingcreativestudio.my.id/aussie-cms",
 };
 
 export const API_ENDPOINTS = {
